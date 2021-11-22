@@ -1,5 +1,6 @@
 black==21.11b1
 fastapi==0.70.0
+flake8==4.0.1
 isort==5.10.1
 motor==2.5.1
 pydantic~=1.8.2
