@@ -1,0 +1,7 @@
+[run]
+source = simple_object_storage
+
+[report]
+omit =
+    */python?.?/*
+    */site-packages/nose/*

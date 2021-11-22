@@ -4,12 +4,6 @@ from simple_object_storage.config import settings
 from .utils import get_uuid
 
 
-def test_index(api_client):
-    response = api_client.get("/")
-    assert response.status_code == 200
-    assert response.json() == {"message": "Hello World!"}
-
-
 def test_using_testing_db():
     assert settings.DB_NAME == "test_simple_object_storage"
     assert "test_simple_object_storage" in settings.DB_URL
@@ -48,7 +42,9 @@ def test_get_non_existent_object(api_client, bucket, object_int):
     object_id = get_uuid(bucket, object_int)
     response = api_client.get(f"/objects/{bucket}/{object_id}")
     assert response.status_code == 404
-    assert response.json() == {"detail": f"Object with id {object_id} not found in bucket {bucket}"}
+    assert response.json() == {
+        "detail": f"Object with id {object_id} not found in bucket {bucket}"
+    }
 
 
 @pytest.mark.parametrize("bucket,object_int", [("a", 3), ("b", 9), ("c", 1)])
@@ -85,4 +81,6 @@ def test_delete_non_existent_object(api_client, bucket, object_int):
     object_id = get_uuid(bucket, object_int)
     response = api_client.delete(f"/objects/{bucket}/{object_id}")
     assert response.status_code == 404
-    assert response.json() == {"detail": f"Object with id {object_id} not found in bucket {bucket}"}
+    assert response.json() == {
+        "detail": f"Object with id {object_id} not found in bucket {bucket}"
+    }

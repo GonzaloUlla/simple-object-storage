@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Run this workflow manually
+  workflow_dispatch:
+
+jobs:
+  linter:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.9 ]
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install project
+        run: pip install -r requirements.txt
+      - name: Run flake
+        run: flake8 simple_object_storage/
+      - name: Run black
+        run: black -l 88 --check simple_object_storage/ && black -l 88 --check tests/
+      - name: Run mypy
+        run: mypy --ignore-missing-imports simple_object_storage/
+
+  tests:
+    needs: linter
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.9 ]
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install project
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest -v --cov-config .coveragerc --cov=simple_object_storage --cov-report=xml --cov-report=html -l --tb=short --maxfail=1 tests
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v1
+        # with:
+        #   fail_ci_if_error: true

@@ -2,6 +2,21 @@ version: "3.7"
 
 services:
 
+  server:
+    build:
+      context: simple_object_storage
+    image: server
+    container_name: server
+    environment:
+      - PORT=8000
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DATABASE=simple_object_storage
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=rootpassword
+    ports:
+      - "8000:8000"
+
   mongo:
     image: mongo:4.2.6
     container_name: mongo

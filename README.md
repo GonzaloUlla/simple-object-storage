@@ -2,7 +2,27 @@
 
 HTTP service to store objects in buckets. Made with Python 3.8
 
-## Getting started
+## Run with Docker
+
+Start services and wait until they are ready:
+
+```shell
+docker-compose up -d --build
+docker-compose ps
+```
+
+## Docs
+
+- Swagger API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+- ReDoc API docs: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+## Mongo Express
+
+For development purposes, you can Explore data in MongoDB Express by browsing to `localhost:8081` and adding a DB with
+name `simple_object_storage`
+
+
+## Development
 
 Create a virtualenv and install dependencies:
 
@@ -17,7 +37,7 @@ Run the project:
 
 ```shell
 cd simple_object_storage
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 8001
 ```
 
 Run tests:
@@ -25,19 +45,3 @@ Run tests:
 ```shell
 pytest
 ```
-
-## Run with Docker (WIP) 
-
-Start services and wait until they are ready:
-
-```shell
-docker-compose up -d --build
-watch -n1 docker-compose ps
-```
-
-Explore data in MongoDB Express by browsing to `localhost:8081` and adding a DB with name `simple_object_storage`
-
-## Docs
-
-- Swagger API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
-- ReDoc API docs: [http://localhost:8000/redoc](http://localhost:8000/redoc)

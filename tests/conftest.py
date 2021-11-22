@@ -6,7 +6,9 @@ from fastapi.testclient import TestClient
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from simple_object_storage.config import settings
-from simple_object_storage.main import app, get_db, ObjectModel
+from simple_object_storage.main import app
+from simple_object_storage.models import ObjectModel
+from simple_object_storage.routers import get_db
 from .utils import get_uuid
 
 FAKE_OBJECTS = {
@@ -23,7 +25,11 @@ TEST_MONGO_DATABASE = "test_simple_object_storage"
 TEST_MONGO_URL = f"""
     mongodb://{settings.MONGO_USERNAME}:{settings.MONGO_PASSWORD}@{settings.MONGO_HOST}
     :{settings.MONGO_PORT}/{TEST_MONGO_DATABASE}?authSource=admin&retryWrites=true&w=majority
-""".replace("\n", "").replace(" ", "")
+""".replace(
+    "\n", ""
+).replace(
+    " ", ""
+)
 
 
 async def override_get_db() -> Generator:

@@ -1,9 +1,9 @@
 """Dependencies to be injected in the API"""
+
 from typing import Generator
 
-from motor.motor_asyncio import AsyncIOMotorClient
-
 from config import settings
+from motor.motor_asyncio import AsyncIOMotorClient
 
 
 async def get_db() -> Generator:
