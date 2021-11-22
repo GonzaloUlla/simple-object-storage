@@ -19,21 +19,27 @@ router = APIRouter()
 
 object_id_path_param = Path(..., title="Object ID", description="A valid UUID")
 bucket_path_param = Path(
-    ..., title="Bucket name", description="A non-empty string", regex="^(?!\s*$).+"
+    ...,
+    title="Bucket name",
+    description="A non-empty string",
+    regex="^(?!\s*$).+",
 )
 
 
 @router.get(
     "/{bucket}",
     response_model=List[ObjectModel],
-    responses={status.HTTP_404_NOT_FOUND: {"description": "Bucket Empty or Not Found"}},
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "Bucket Empty or Not Found"}
+    },
 )
 async def get_objects(bucket: str = bucket_path_param, db=Depends(get_db)):
     objects = await get_objects_by_bucket(db, bucket)
     if objects:
         return objects
     raise HTTPException(
-        status_code=404, detail=f"Bucket with name {bucket} is empty or not found"
+        status_code=404,
+        detail=f"Bucket with name {bucket} is empty or not found",
     )
 
 
@@ -74,13 +80,19 @@ async def upsert_object(
     find_result = await get_object_by_id(db, bucket, obj.id)
     if find_result is None:
         insert_result = await insert_object(db, bucket, obj)
-        created_obj = await get_object_by_id(db, bucket, insert_result.inserted_id)
-        return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_obj)
+        created_obj = await get_object_by_id(
+            db, bucket, insert_result.inserted_id
+        )
+        return JSONResponse(
+            status_code=status.HTTP_201_CREATED, content=created_obj
+        )
     else:
         update_result = await update_object_data(db, bucket, obj.id, obj.data)
         if update_result.modified_count == 1:
             updated_obj = await get_object_by_id(db, bucket, obj.id)
-            return JSONResponse(status_code=status.HTTP_200_OK, content=updated_obj)
+            return JSONResponse(
+                status_code=status.HTTP_200_OK, content=updated_obj
+            )
 
 
 @router.delete(

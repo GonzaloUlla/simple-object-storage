@@ -24,7 +24,9 @@ def test_get_objects_in_bucket(api_client):
 def test_get_objects_in_non_existent_bucket(api_client):
     response = api_client.get("/objects/c")
     assert response.status_code == 404
-    assert response.json() == {"detail": f"Bucket with name c is empty or not found"}
+    assert response.json() == {
+        "detail": f"Bucket with name c is empty or not found"
+    }
 
 
 def test_get_object(api_client):
@@ -51,7 +53,9 @@ def test_get_non_existent_object(api_client, bucket, object_int):
 def test_insert_object(api_client, bucket: str, object_int: int):
     object_id = get_uuid(bucket, object_int)
     object_data = f"{bucket}{object_int} data"
-    response = api_client.put(f"/objects/{bucket}/{object_id}", json=object_data)
+    response = api_client.put(
+        f"/objects/{bucket}/{object_id}", json=object_data
+    )
     assert response.status_code == 201
     assert response.json() == {"_id": str(object_id), "data": object_data}
 
@@ -61,7 +65,9 @@ def test_update_object(api_client):
     object_int = 2
     object_id = get_uuid(bucket, object_int)
     new_object_data = f"new {bucket}{object_int} data"
-    response = api_client.put(f"/objects/{bucket}/{object_id}", json=new_object_data)
+    response = api_client.put(
+        f"/objects/{bucket}/{object_id}", json=new_object_data
+    )
     assert response.status_code == 200
     assert response.json() == {"_id": str(object_id), "data": new_object_data}
 
