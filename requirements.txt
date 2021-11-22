@@ -1,0 +1,8 @@
+fastapi==0.70.0
+motor==2.5.1
+pydantic~=1.8.2
+pymongo~=3.12.1
+pytest==6.2.5
+pytest-mock==3.6.1
+requests==2.26.0
+uvicorn==0.15.0
