@@ -22,7 +22,7 @@ bucket_path_param = Path(
     ...,
     title="Bucket name",
     description="A non-empty string",
-    regex="^(?!\s*$).+",
+    regex=r"^(?!\s*$).+",
 )
 
 
@@ -75,7 +75,7 @@ async def upsert_object(
     object_id: UUID = object_id_path_param,
     object_data: str = Body(...),
     db=Depends(get_db),
-) -> JSONResponse:
+):
     obj = ObjectModel(id=object_id, data=object_data)
     find_result = await get_object_by_id(db, bucket, obj.id)
     if find_result is None:

@@ -12,7 +12,7 @@ class CommonSettings(BaseSettings):
 
 class ServerSettings(BaseSettings):
     HOST: str = os.getenv("HOST", "0.0.0.0")
-    PORT: int = os.getenv("PORT", 8000)
+    PORT = os.getenv("PORT", 8000)
 
 
 class DatabaseSettings(BaseSettings):
@@ -22,12 +22,13 @@ class DatabaseSettings(BaseSettings):
 
 class MongoSettings(DatabaseSettings):
     MONGO_HOST: str = os.getenv("MONGO_HOST", "localhost")
-    MONGO_PORT: int = os.getenv("MONGO_PORT", 27017)
+    MONGO_PORT = os.getenv("MONGO_PORT", 27017)
     MONGO_USERNAME: str = os.getenv("MONGO_USERNAME", "root")
     MONGO_PASSWORD: str = os.getenv("MONGO_PASSWORD", "rootpassword")
     MONGO_DATABASE: str = os.getenv("MONGO_DATABASE", "simple_object_storage")
     MONGO_URL: str = (
-        f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DATABASE}"
+        f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_HOST}"
+        f":{MONGO_PORT}/{MONGO_DATABASE}"
         "?authSource=admin&retryWrites=true&w=majority"
     )
 
